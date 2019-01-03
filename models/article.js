@@ -15,6 +15,11 @@ var ArticleSchema = new Schema({
         type: String,
         required: true
     },
+    // Saved, will need this value to display false at first and true when a user saves an article
+    saved: {
+        type: Boolean,
+        default: false
+    },
     // Note, keep in mind it needs to be stored as a note id
     note: {
         type: Schema.Types.ObjectId,
