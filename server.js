@@ -1,6 +1,7 @@
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
 
 //================================
 // Scrapping tools
@@ -11,13 +12,14 @@ var cheerio = require("cheerio");
 // require models
 var db = require("./models");
 // PORT
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Initializing express
 var app = express();
 
 //=================================
 // Middleware
+
 
 // use to log requests
 app.use(logger("dev"));
@@ -27,11 +29,26 @@ app.use(express.json());
 // make a public folder static
 app.use(express.static("public"));
 
+// handlebars
+app.engine(
+    "handlebars",
+    exphbs({
+        extname: "handlebars",
+        defaultLayout: "main"
+    })
+);
+app.set("view engine", "handlebars");
+
 // connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+mongoose.connect("mongodb://localhost/shoryuPopulater", { useNewUrlParser: true });
 
 //==================================
 // Routes
+var htmlRoutes = require("./routes/htmlRoutes");
+var apiRoutes = require("./routes/apiRoutes");
+
+app.use(htmlRoutes);
+app.use(apiRoutes);
 
 // A GET route for scraping the shoryuken website
 app.get("/scrape", function(req, res) {
@@ -47,8 +64,9 @@ app.get("/scrape", function(req, res) {
     var result = {};
 
     // Adding the text and link
-    result.title = $(element).children().text();
-    result.link = $(element).find("a").attr("href");
+    result.title = $(this).children().text();
+    result.link = $(this).find("a").attr("href");
+    result.saved = false;
 
     // After we have an article created, we can then put it in our table
     db.Article.create(result)
@@ -70,6 +88,21 @@ app.get("/scrape", function(req, res) {
     //===============axios.get });
     });
     //===============app.get });
+});
+
+// =====================================
+// Here are the articles
+app.get("/articles", function (req, res) {
+    // Grab every document in the articles collection
+    db.Article.find({})
+        .then(function(dbArticle) {
+            // If we find the articles, send it to the client side
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            // If an error occurs, send it to the client
+            res.json(err);
+        });
 });
 
 // Starts the server
