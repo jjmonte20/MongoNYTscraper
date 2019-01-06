@@ -12,8 +12,3 @@ $(document).ready(function(){
     $(".clear").on("click", handleArticleClear);
 // bottom of the document
 });
-
-function initPage() {
-    // Run and Ajax request for any of the unsaved articles
-    $.get("/")
-}
