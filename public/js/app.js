@@ -33,11 +33,12 @@ $(document).ready(function() {
         var editArticle = {
             // will need to get this article's values
             _id: id,
-            title: $('#p' + id + '').text().trim(),
-            link: $('#a' + id + '').attr("href"),
+            // title: $('#p' + id + '').text().trim(),
+            // link: $('#a' + id + '').attr("href"),
             saved: true
         }
         console.log(editArticle);
+        $("#article" + editArticle._id + "").remove();
         updateArtcicle(editArticle);
     }
 
@@ -48,7 +49,6 @@ $(document).ready(function() {
             data: edit
         }).then(function(data) {
             console.log(data + "moving to saved");
-            $("#article" + editArticle._id + "").remove();
             window.location.reload();
         });
     }
