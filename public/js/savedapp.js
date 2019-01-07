@@ -7,7 +7,7 @@ $(document).ready(function(){
     // keep in mind this is what we'll be naming the buttons later
     $(document).on("click", ".btn.delete", HandleArticleDelete);
     $(document).on("click", ".btn.notes", HandleArticleNotes);
-    $(document).on("click", ".btn.save", HandleNoteSave);
+    $(document).on("click", ".btn.note-save", HandleNoteSave);
     $(document).on("click", ".btn.note-delete", handleNoteDelete);
     $(".clear").on("click", handleArticleClear);
 // bottom of the document

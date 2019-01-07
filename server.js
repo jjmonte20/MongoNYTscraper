@@ -51,7 +51,7 @@ app.use(htmlRoutes);
 app.use(apiRoutes);
 
 // A GET route for scraping the shoryuken website
-app.get("/scrape", function(req, res) {
+app.get("/api/scrape", function(req, res) {
     // First need to grab the body of the html with axios
     axios.get("http://shoryuken.com").then(function(response) {
     // first load cheerio
@@ -84,7 +84,7 @@ app.get("/scrape", function(req, res) {
     //=============================
     //creating a new row item in the database
 
-    res.send("Scrape Complete");
+    res.render("index");
     //===============axios.get });
     });
     //===============app.get });
