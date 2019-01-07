@@ -37,7 +37,13 @@ router.get("/api/articles?saved=true", function (req, res) {
 // need to have an api route for saving an article
 router.put("/api/articles/:id", function (req, res) {
     // saves the individual article
-})
+    db.Article.findOneAndUpdate(req.params.id, req.body, { new: true }, function(err) {
+        if (err) {
+            return res.send(err);
+        }
+        console.log(req.body);
+    });
+});
 
 // also need to have one for when the user saves an article
 

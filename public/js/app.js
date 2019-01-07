@@ -34,7 +34,8 @@ $(document).ready(function() {
             // will need to get this article's values
             _id: id,
             title: $('#p' + id + '').text().trim(),
-            link: $('#a' + id + '').attr("href")
+            link: $('#a' + id + '').attr("href"),
+            saved: true
         }
         console.log(editArticle);
         updateArtcicle(editArticle);
@@ -45,9 +46,11 @@ $(document).ready(function() {
             method: "PUT",
             url: "/api/articles/" + edit._id,
             data: edit
-        }).then(function() {
+        }).then(function(data) {
+            console.log(data + "moving to saved");
+            $("#article" + editArticle._id + "").remove();
             window.location.reload();
-        })
+        });
     }
 // ===========================
 });
