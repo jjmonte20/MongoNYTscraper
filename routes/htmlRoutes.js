@@ -28,9 +28,9 @@ router.get("/saved", function(req, res) {
 
 // use this to remove all of the articles
 router.get("/api/clear", function (req, res) {
-    db.Article.remove({})
+    db.Article.remove({ saved: false })
     .then(function(dbArticle) {
-        var hbsObject = { unsaved: dbArticle}
+        var hbsObject = { unsaved: dbArticle }
         res.render("index", hbsObject)
     });
 });

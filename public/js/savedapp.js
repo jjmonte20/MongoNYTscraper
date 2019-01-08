@@ -12,3 +12,5 @@
 //     $(".clear").on("click", handleArticleClear);
 // // bottom of the document
 // });
+
+// here I would make a function that will populate the notes in the modal
