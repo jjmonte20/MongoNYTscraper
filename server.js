@@ -39,8 +39,16 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 
-// connect to the Mongo DB
-mongoose.connect("mongodb://localhost/shoryuPopulater", { useNewUrlParser: true });
+// Define the local Uri
+var databaseUri = "mongodb://localhost/shoryuPopulater";
+// ======================= if heroku
+if (process.env.MONGODB_URI) {
+    // only executed if it's in the heroku app
+    mongoose.connect(process.env.MONGODB_URI);
+} else {
+    // connect to the Mongo DB using local
+    mongoose.connect(databaseUri, { useNewUrlParser: true });
+}
 
 //==================================
 // Routes
