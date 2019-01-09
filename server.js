@@ -105,6 +105,25 @@ app.get("/articles", function (req, res) {
         });
 });
 
+// need an api route for adding a note to an article
+app.post("/api/addnote/:id", function (req, res) {
+    console.log(req.body);
+    // Creates a new note and passes the req.body to the entry
+    db.Note.create(req.body)
+        .then(function(dbNote) {
+            // If a note is created successfully, find one and update article to include the note
+            return db.Article.findOneAndUpdate({ _id: req.param.id }, { $push:{ note: dbNote._id }}, { new: true });
+        })
+        .then(function(dbArticle) {
+            // If we are able to update the article, send it back to the user
+            res.json(dbArticle);
+        })
+        .catch(function(err) {
+            // If an error occurs, send it to the client
+            res.json(err);
+        });
+});
+
 // Starts the server
 app.listen(PORT, function() {
     console.log(PORT + " is listening");

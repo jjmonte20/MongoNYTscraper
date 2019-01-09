@@ -20,10 +20,12 @@ var ArticleSchema = new Schema({
         type: Boolean
     },
     // Note, keep in mind it needs to be stored as a note id
-    note: {
+    note: [
+        {
         type: Schema.Types.ObjectId,
         ref: "Note"
-    }
+        }
+    ]
 });
 
 // Create the model for the above schema

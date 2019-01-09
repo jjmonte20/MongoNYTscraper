@@ -3,6 +3,8 @@ var db = require("../models");
 // need express
 var express = require("express");
 
+// var mongoose = require("mongoose");
+
 // need to route as well
 var router = express.Router();
 
@@ -37,30 +39,12 @@ router.get("/api/articlenote/:id", function (req, res) {
 // need to have an api route for saving an article
 router.put("/api/articles/:id", function (req, res) {
     // saves the individual article
-    db.Article.findOneAndUpdate({_id:req.params.id}, {$set:req.body}, function(err) {
+    db.Article.findOneAndUpdate({_id:req.params.id}, { $set:req.body }, function(err) {
         if (err) {
             return res.send(err);
         }
         console.log(req.body);
     });
-});
-
-// need an api route for adding a note to an article
-router.post("/api/addnote/:id", function (req, res) {
-    // Creates a new note and passes the req.body to the entry
-    db.Note.create(req.body)
-        .then(function(dbNote) {
-            // If a note is created successfully, find one and update article to include the note
-            return db.Article.findOneAndUpdate({ _id: req.param.id }, { note: dbNote._id}, { new: true});
-        })
-        .then(function(dbArticle) {
-            // If we are able to update the article, send it back to the user
-            res.json(dbArticle);
-        })
-        .catch(function(err) {
-            // If an error occurs, send it to the client
-            res.json(err);
-        });
 });
 
 // use this to remove one of the articles
@@ -81,7 +65,7 @@ router.get("/api/removenote/:id", function (req, res) {
 
 // use this to clear saved articles
 router.get("/api/clearsaved", function (req, res) {
-    db.Article.remove({ saved: true })
+    db.Article.remove()
     .then(function(dbArticle) {
         var hbsObject = { saved: dbArticle }
         res.render("saved", hbsObject)
