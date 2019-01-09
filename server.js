@@ -111,10 +111,12 @@ app.post("/api/addnote/:id", function (req, res) {
     // Creates a new note and passes the req.body to the entry
     db.Note.create(req.body)
         .then(function(dbNote) {
+            console.log(dbNote);
             // If a note is created successfully, find one and update article to include the note
-            return db.Article.findOneAndUpdate({ _id: req.param.id }, { $push:{ note: dbNote._id }}, { new: true });
+            return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push:{ note: dbNote._id }}, { new: true });
         })
         .then(function(dbArticle) {
+            console.log(dbArticle)
             // If we are able to update the article, send it back to the user
             res.json(dbArticle);
         })
